@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,57 +11,57 @@ using API.Models;
 namespace API.Controllers
 {
     [Produces("application/json")]
-    [Route("api/children")]
-    public class childrenController : Controller
+    [Route("api/companies")]
+    public class companiesController : Controller
     {
         private readonly CompanyModel _context;
 
-        public childrenController(CompanyModel context)
+        public companiesController(CompanyModel context)
         {
             _context = context;
         }
 
-        // GET: api/children
+        // GET: api/companies
         [HttpGet]
-        public IEnumerable<child> Getchild()
+        public IEnumerable<company> Getcompany()
         {
-            return _context.child;
+            return _context.company;
         }
 
-        // GET: api/children/5
+        // GET: api/companies/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> Getchild([FromRoute] string id)
+        public async Task<IActionResult> Getcompany([FromRoute] string id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var child = await _context.child.SingleOrDefaultAsync(m => m.color2 == id);
+            var company = await _context.company.SingleOrDefaultAsync(m => m.color == id);
 
-            if (child == null)
+            if (company == null)
             {
                 return NotFound();
             }
 
-            return Ok(child);
+            return Ok(company);
         }
 
-        // PUT: api/children/5
+        // PUT: api/companies/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Putchild([FromRoute] string id, [FromBody] child child)
+        public async Task<IActionResult> Putcompany([FromRoute] string id, [FromBody] company company)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != child.color2)
+            if (id != company.color)
             {
                 return BadRequest();
             }
 
-            _context.Entry(child).State = EntityState.Modified;
+            _context.Entry(company).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +69,7 @@ namespace API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!childExists(id))
+                if (!companyExists(id))
                 {
                     return NotFound();
                 }
@@ -81,45 +82,45 @@ namespace API.Controllers
             return NoContent();
         }
 
-        // POST: api/children
+        // POST: api/companies
         [HttpPost]
-        public async Task<IActionResult> Postchild([FromBody] child child)
+        public async Task<IActionResult> Postcompany([FromBody] company company)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.child.Add(child);
+            _context.company.Add(company);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("Getchild", new { id = child.color2 }, child);
+            return CreatedAtAction("Getcompany", new { id = company.color }, company);
         }
 
-        // DELETE: api/children/5
+        // DELETE: api/companies/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Deletechild([FromRoute] string id)
+        public async Task<IActionResult> Deletecompany([FromRoute] string id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var child = await _context.child.SingleOrDefaultAsync(m => m.color2 == id);
-            if (child == null)
+            var company = await _context.company.SingleOrDefaultAsync(m => m.color == id);
+            if (company == null)
             {
                 return NotFound();
             }
 
-            _context.child.Remove(child);
+            _context.company.Remove(company);
             await _context.SaveChangesAsync();
 
-            return Ok(child);
+            return Ok(company);
         }
 
-        private bool childExists(string id)
+        private bool companyExists(string id)
         {
-            return _context.child.Any(e => e.color2 == id);
+            return _context.company.Any(e => e.color == id);
         }
     }
 }

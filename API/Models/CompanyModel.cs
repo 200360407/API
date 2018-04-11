@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Models;
 
 namespace API.Models
 {
@@ -13,6 +14,12 @@ namespace API.Models
         // constructor
         public CompanyModel(DbContextOptions<CompanyModel> options) : base(options) { }
 
-        public DbSet<child> children{ get; set; }
+       
+
+        public DbSet<company> company { get; set; }
+
+       
+
+        public DbSet<API.Models.child> child { get; set; }
     }
 }
